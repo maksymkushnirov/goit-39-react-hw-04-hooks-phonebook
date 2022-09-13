@@ -4,21 +4,16 @@ import ContactForm from 'components/ContactForm';
 import ContactList from 'components/ContactList';
 import Filter from 'components/Filter';
 
-const contactList = [
-  { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-  { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-  { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-  { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-];
-
 export const App = () => {
   const [filter, setFilter] = useState('');
-  const [contacts, setContacts] = useState(() => JSON.parse(localStorage.getItem('contacts')) ?? contactList);
+  const [contacts, setContacts] = useState(
+    () => JSON.parse(localStorage.getItem('contacts')) || []
+  );
 
-  useEffect(() => { localStorage.setItem('contacts', JSON.stringify(contacts)); }, [contacts]);
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
 
-
-  
   const addContact = (name, number) => {
     if (contacts.find(contact => contact.name === name)) {
       alert(`${name} is already in contacts`);
@@ -35,8 +30,9 @@ export const App = () => {
   };
 
   const deleteContact = contactId => {
-    setContacts(
-      prevState => prevState.filter(contact => contact.id !== contactId));
+    setContacts(prevState =>
+      prevState.filter(contact => contact.id !== contactId)
+    );
   };
 
   const changeFilter = e => {
@@ -49,7 +45,6 @@ export const App = () => {
       contact.name.toLowerCase().includes(normalizedFilter)
     );
   };
-
 
   return (
     <div className="container">
@@ -65,5 +60,4 @@ export const App = () => {
       </div>
     </div>
   );
-  
 };
